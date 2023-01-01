@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- * @function : BoardMapper * @author : Taeseung Choi * @Date : Dec 26. 
+	2022. -->
+<mapper namespace="com.hyundai.mapper.BoardMapper">
+
+	<!-- 게시판 리스트 가져오기 -->
+	<select id="getList2" resultType="com.hyundai.domain.BoardVO">
+  <![CDATA[
+  	select * from boards where boardid > 0
+  ]]>
+	</select>
+
+	<!-- 페이징 처리에 필요한 순서로 ROWNUM을 붙이고 inline view로 처리 pageNum : 만들고자하는 페이지의 수 
+		amount : 각 페이지 마다 표시할 행의 수 -->
+	<select id="getListWithPaging"
+		resultType="com.hyundai.domain.BoardVO">
+  	<![CDATA[
+  		select boardid,
+		boardtitle, boardcontent,
+		boardcategory, membersmemberid, boardsubcategory, boardregdate, boardenddate
+  		from
+  			(
+  			 select 	/*+ INDEX_DESC(boards boards_pk) */
+  				rownum rn, boardid,
+		boardtitle, boardcontent,
+		boardcategory, membersmemberid, boardsubcategory, boardregdate, boardenddate
+  			 from
+  			 	boards
+  			 where rownum <= #{pageNum} * #{amount}	 
+  			)
+  		where rn > (#{pageNum} -1 ) * #{amount}
+  	]]>
+	</select>
+
+	<!-- 게시판 등록 -->
+	<!-- <insert id="insert" parameterType="com.hyundai.domain.BoardVO"> INSERT 
+		INTO boards(boardid, membersmemberid, boardtitle, boardcontent, boarddate) 
+		VALUES(boardid_seq.nextval, #{boardWriter}, #{boardTitle}, #{boardContent}, 
+		sysdate) </insert> -->
+	<insert id="insert" parameterType="com.hyundai.domain.BoardVO">
+		INSERT INTO boards(boardid,
+		membersmemberid, boardtitle, boardcontent,
+		boardcategory,boardsubcategory, boardregdate, boardenddate)
+
+		VALUES(#{boardId}, #{membersMemberId}, #{boardTitle}, #{boardContent},
+		#{boardCategory},#{boardSubcategory}, #{boardRegDate},
+		#{boardEndDate})
+	</insert>
+
+	<!-- 게시판 조회 -->
+	<select id="read" resultType="com.hyundai.domain.BoardVO">
+		SELECT * FROM boards where boardid
+		= #{boardId}
+	</select>
+
+	<!-- 게시판 삭제 -->
+	<delete id="delete">
+		DELETE FROM boards where boardid = #{boardId}
+	</delete>
+
+	<!-- 게시판 수정 -->
+	<update id="update" parameterType="com.hyundai.domain.BoardVO">
+		UPDATE boards
+		SET
+		boardtitle=#{boardTitle},
+		boardcontent= #{boardContent},
+		boardcategory= #{boardCategory},
+		boardsubcategory= #{boardSubcategory},
+		boardregdate= #{boardRegDate},
+		boardenddate= #{boardEndDate}
+		WHERE boardid= 1
+
+	</update>
+
+	<!-- 게시물 총 개수 -->
+	<select id="getTotalCount" resultType="int">
+  	<![CDATA[
+  		SELECT count(*) from boards where boardid > 0
+  	]]>
+	</select>
+
+	<select id="test" resultType="com.hyundai.domain.BoardVO">
+		select * from boards
+	</select>
+
+</mapper>
