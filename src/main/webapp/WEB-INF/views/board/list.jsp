@@ -36,11 +36,11 @@
 							<form method="get">
 								<input type="hidden" name="boardSubcategory" value="FAQ">
 								<input type="hidden" name="boardCategory" value="${param.boardCategory}">
-
+								
 								<div class="box">
 									<select name="searchType" id="searchType">
-										<option value="boardtitle">제목</option>
-										<option value="boardcontent">내용</option>
+										<option value="boardtitle" ${param.searchType eq 'boardtitle' ? 'selected' :'' }>제목</option>
+										<option value="boardcontent" ${param.searchType eq 'boardcontent' ? 'selected' :'' }>내용</option>
 									</select> 
 									<input type="search" name="keyword"  value="${param.keyword}"
 									class="form_input block basic_search" placeholder="FAQ SEARCH"> 
@@ -86,7 +86,7 @@
 								
 							</tbody>
 						</table>
-						
+							
 						<div class="page_write">						
 							${pagination}
 							
@@ -107,17 +107,32 @@
 			<%@ include file="../include/footer.jsp" %>
 			<!-- //하단 -->
 	
+		
 	
 		</div>		
 	</div>
 	
 	<script>
-		function boardUpdate(boardId){
+		function boardUpdate(boardId){			
 			location.href="update?boardId="+boardId
 		}
 		
 		function boardDelete(boardId){
-			alert(boardId);
+			if(confirm("정말 삭제 하시겠습니까?")){
+				$.ajax({
+					url:'delete',
+					type:"POST",
+					data:{boardId},
+					success:function(res){
+						if(res==="success"){
+							location.reload();	
+						}						
+					},
+					error:function(error){
+						console.error(error);
+					}
+				})
+			}		
 		}
 	</script>
 	

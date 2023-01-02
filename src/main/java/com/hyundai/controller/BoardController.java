@@ -1,8 +1,10 @@
 package com.hyundai.controller;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +44,7 @@ public class BoardController {
 	@GetMapping("/list")
 	public void list(PageMaker pageMaker, Model model) throws Exception{
 		
-		int total = service.getTotal(pageMaker); // 게시글의 개수 표시
-				
+		int total = service.getTotal(pageMaker); // 게시글의 개수 표시				
 		pageMaker.setTotPage(total);		
 		List<BoardVO> list=service.getListWithPaging(pageMaker);
 
@@ -76,51 +77,41 @@ public class BoardController {
 	
 	//게시글 조회 및 수정 -> read.jsp 조회하고 싶은 게시글을 클릭하면 boardId과 페이징 정보 자동 바인딩
 	@GetMapping({"/read","/update"})
-	public void read(@RequestParam("boardId")long boardId, Model model, @ModelAttribute("cri")BoardCriteria cri) throws Exception {
+	public void read(@RequestParam("boardId")long boardId, Model model) throws Exception {
 		model.addAttribute("board", service.read(boardId));
 	}	
 	
 	
 	@PostMapping("/update") // 게시글 수정(update) 페이지. 수정 버튼을 누르면 실행됨
-	public String update(BoardVO board, RedirectAttributes rttr, @ModelAttribute("cri")BoardCriteria cri) throws Exception {
+	public String update(BoardVO board, RedirectAttributes rttr) throws Exception {
 		//수정되는 값이 있으면 success 결과를 attribute 값으로 전송함
 		if(service.update(board)) {
 			rttr.addFlashAttribute("result","success");
-		}
-		else {
-			log.info("실패");
-		}
-		//조회한 게시글이 몇 페이지인지 얻어온다
-		rttr.addAttribute("pageNum",cri.getPageNum());
-		return "redirect:/board/list";
+		}		
+		return "redirect:read?boardId="+board.getBoardId();
 	}
 	
-	//게시글 조회 페이지에서 삭제 버튼을 누를시 실행되는 메서드
+	
+	
+	/**Ajax 반환 처리
+	 * 게시글 조회 페이지에서 삭제 버튼을 누를시 실행되는 메서드
+	 * @param boardId
+	 * @param rttr
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping("/delete")
-	public String delete(@RequestParam("boardId")long boardId, RedirectAttributes rttr) throws Exception{
+	public ResponseEntity<?> delete(@RequestParam("boardId")long boardId, RedirectAttributes rttr) throws Exception{
 		//받아온 boardId값으로 해당되는 게시글을 삭제한다
-		if(service.delete(boardId)) {
-			rttr.addFlashAttribute("result","success");
-		}
-		//삭제 후 게시판 초기 화면으로 이동
-		return "redirect:/board/list?pageNum=1&amount=10";
+		try {
+			service.delete(boardId);
+			return ResponseEntity.status(200).body("success");
+		}catch(Exception e) {
+			return ResponseEntity.status(403).body("삭제 오류");			
+		}		
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	//---------------------------------------------------------------
-//	@GetMapping("/list")
-//	public void list2(BoardCriteria cri, Model model) throws Exception
-//	{
-//		
-//		log.info("list"+ cri);
-//		model.addAttribute("list", service.getList2(cri));
-//		
-//	}
+
 
 }

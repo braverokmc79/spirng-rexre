@@ -90,10 +90,9 @@
 		boardcontent= #{boardContent},
 		boardcategory= #{boardCategory},
 		boardsubcategory= #{boardSubcategory},
-		boardregdate= #{boardRegDate},
-		boardenddate= #{boardEndDate}
-		WHERE boardid= 1
-
+		membersmemberid=#{membersMemberId},
+		boardenddate= sysdate
+		WHERE boardid= #{boardId}
 	</update>
 
 

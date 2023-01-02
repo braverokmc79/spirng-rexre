@@ -69,6 +69,8 @@ public class PageMaker {
 	/** 하위카테고리 */
 	private String boardSubcategory; 		
 
+
+	private String pageParam;
 	
 	public PageMaker() {
 		if(boardSubcategory==null || !boardSubcategory.equals("")) {
@@ -151,14 +153,15 @@ public class PageMaker {
 
 	
 	/**  페이지 파라미터 */ 
-	public String makeSearch(int page) {
+	public String makeSearch(Integer page) {
 		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
 				.queryParam("perPageNum", perPageNum).queryParam("searchType", searchType)
 				.queryParam("boardCategory", boardCategory)
-				.queryParam("boardSubcategory", boardSubcategory	)
+				.queryParam("boardSubcategory", boardSubcategory)
 				.queryParam("keyword", keyword).build();
 		return uriComponents.toUriString();
 	}
+
 
 	/**  페이지 네이션   */ 
 	public String pagination(String url) {

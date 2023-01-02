@@ -20,6 +20,7 @@
 				<h2 class="subtitle">쇼핑FAQ 등록</h2>
 				
 			<form id="faqForm" name="faqForm" method="post" action="insert" >
+				<input type="hidden" name="pageParam"  id="pageParam" value="${pageMaker.pageParam}"  >
 				
 				<fieldset>
 					<legend>쇼핑FAQ 게시글 작성</legend>
@@ -35,7 +36,7 @@
 									<th scope="row"><strong class="reqd"></strong> 게시판</th>
 									<td class="storeQue">
 										<p>FAQ</p>
-										<input type="hidden" name="boardSubcategory" value="FAQ" >
+										<input type="hidden" name="boardSubcategory" maxlength="150" value="FAQ" >
 									</td>
 								</tr>
 								<tr>
@@ -63,7 +64,7 @@
 								<tr>
 									<th scope="row"><strong class="reqd">*</strong>내용<span class="com_txt_p">(2000자 이하)</span></th>
 									<td>
-										<textarea id="boardContent" name="boardContent" title="내용" cols="30" rows="10" placeholder="내용을 입력해주세요"></textarea>
+										<textarea id="boardContent" name="boardContent" title="내용" cols="30" rows="10" maxlength="2000"	placeholder="내용을 입력해주세요"></textarea>
 									</td>
 								</tr>
 							

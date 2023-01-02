@@ -23,7 +23,7 @@ public class BoardServiceImpl implements BoardService {
 
 	// 페이징 처리한 게시물 리스트를 가져옴
 	@Override
-	public List<BoardVO> getListWithPaging(PageMaker pageMaker)throws Exception {
+	public List<BoardVO> getListWithPaging(PageMaker pageMaker) throws Exception {
 		log.info(">>> 게시판 페이징 처리 list 불러오기 시작" + pageMaker.toString());
 		return mapper.getListWithPaging(pageMaker);
 	}
@@ -32,10 +32,10 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void insert(BoardVO board) throws Exception {
 		log.info(">>> insert 시작");
-		if(board.getMembersMemberId()==null) {
+		// 회원 아이디가 없을 경우 기본 아이디 1로 설정
+		if (board.getMembersMemberId() == null)
 			board.setMembersMemberId(Long.valueOf(1));
-		}
-		
+		board.setBoardContent(board.getBoardContent().replace("\r\n", "<br>"));
 		mapper.insert(board);
 	}
 
@@ -50,6 +50,10 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean update(BoardVO board) throws Exception {
 		log.info(">>> update 시작");
+		// 회원 아이디가 없을 경우 기본 아이디 1로 설정
+		if (board.getMembersMemberId() == null)
+			board.setMembersMemberId(Long.valueOf(1));
+		board.setBoardContent(board.getBoardContent().replace("\r\n", "<br>"));
 		return mapper.update(board) == true;
 	}
 
@@ -57,6 +61,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean delete(long boardId) throws Exception {
 		log.info(">>> delete 시작");
+
 		return mapper.delete(boardId) == true;
 	}
 
@@ -72,5 +77,7 @@ public class BoardServiceImpl implements BoardService {
 		log.info("@@@@@@@@@@@@@@2 getList2 ServiceImple");
 		return mapper.getListWithPaging(pageMaker);
 	}
+
+	
 
 }

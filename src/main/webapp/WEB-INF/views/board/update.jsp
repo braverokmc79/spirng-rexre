@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,7 +21,10 @@
 				
 				<h2 class="subtitle">쇼핑FAQ 업데이트</h2>
 				
-			<form id="faqForm" name="faqForm" method="post" action="insert" >
+			<form id="faqForm" name="faqForm" method="post" action="update" >
+				
+				<input type="hidden" name="boardId" value="${board.boardId}" >
+				<input type="hidden" name="boardSubcategory" value="${board.boardSubcategory}" >
 				
 				<fieldset>
 					<legend>쇼핑FAQ 게시글 업데이트</legend>
@@ -35,7 +40,6 @@
 									<th scope="row"><strong class="reqd"></strong> 게시판</th>
 									<td class="storeQue">
 										<p>FAQ</p>
-										<input type="hidden" name="boardSubcategory" value="FAQ" >
 									</td>
 								</tr>
 								<tr>
@@ -44,12 +48,12 @@
 										<div class="form-group col-sm-5">
 											<select class="form-control" id="boardCategory" name="boardCategory"  style="width: 150px">
 												<option value=""></option>
-												<option value="주문/결제">주문결제</option>
-												<option value="배송">배송</option>
-												<option value="취소">취소</option>
-												<option value="교환/환불">교환/환불</option>
-												<option value="회원">회원</option>
-												<option value="기타">기타</option>
+												<option value="주문/결제" ${board.boardCategory eq '주문/결제'? 'selected':''}>주문결제</option>
+												<option value="배송" ${board.boardCategory eq '배송'? 'selected':''}>배송</option>
+												<option value="취소" ${board.boardCategory eq '취소'? 'selected':''}>취소</option>
+												<option value="교환/환불" ${board.boardCategory eq '교환/환불'? 'selected':''}>교환/환불</option>
+												<option value="회원" ${board.boardCategory eq '회원'? 'selected':''}>회원</option>
+												<option value="기타" ${board.boardCategory eq '기타'? 'selected':''}>기타</option>
 											</select>
 										</div>
 									</td>
@@ -58,12 +62,14 @@
 								
 								<tr>
 									<th scope="row"><strong class="reqd">*</strong>제목</th>
-									<td><input type="text" id="boardTitle" name="boardTitle" title="제목" class="w_all"></td>
+									<td><input type="text" id="boardTitle" name="boardTitle" title="제목" maxlength="150" class="w_all" value="${board.boardTitle}"></td>
 								</tr>
 								<tr>
 									<th scope="row"><strong class="reqd">*</strong>내용<span class="com_txt_p">(2000자 이하)</span></th>
-									<td>
-										<textarea id="boardContent" name="boardContent" title="내용" cols="30" rows="10" placeholder="내용을 입력해주세요"></textarea>
+									<td> 
+<textarea id="boardContent" name="boardContent" title="내용" cols="30" rows="10"  maxlength="2000" placeholder="내용을 입력해주세요">${fn:replace(board.boardContent, "<br>", replaceChar)}</textarea>
+										
+										
 									</td>
 								</tr>
 			 
