@@ -49,3 +49,34 @@
 				</div>
 			</div>
 			<!-- //하단 -->
+			
+
+		<script type='text/javascript' src="${pageContext.request.contextPath}/resources/assets/common/common.js"></script>
+		<!-- placeholder 스크립트 (삭제하시면 ie 하위브라우저에서 구현되지 않습니다.) -->
+		<script src="${pageContext.request.contextPath}/resources/assets/skin/placeholder.js"></script>					
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/assets/common/auto_scroll.js" defer='defer'></script>
+		<script type="text/javascript">
+		/* 게시판 분류, 전체보기 탭 노출 */
+			$(document).ready(function(){
+			
+		
+				function getParameterByName(name) {
+					name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+					var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+					results = regex.exec(location.search);
+					return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+				}
+				var uid = getParameterByName('boardCategory');
+				
+				if (uid == ''){
+					$('#boardlist .cateList ul li:first-child').addClass('active');
+				}
+				
+				// 인기검색어 폰트사이즈 제어
+				$('.header').each(function(idx) {
+					if ($(this).find('.hot_keyword .list li').length > 8){
+						$(this).find('.hot_keyword .list').addClass('small');
+					}
+				})	
+			});
+	</script>			

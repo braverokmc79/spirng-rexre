@@ -26,20 +26,20 @@ public class BoardServiceTests {
 	
 	@Setter(onMethod_= {@Autowired})
 	private BoardService service;
-	//BoardService °´Ã¼ ÁÖÀÔ Å×½ºÆ®
+	//BoardService ê°ì²´ ì£¼ìž… í…ŒìŠ¤íŠ¸
 	Date day = new Date();
-	//Å×½ºÆ® ÀÛµ¿ È®ÀÎ
+	//í…ŒìŠ¤íŠ¸ ìž‘ë™ í™•ì¸
 //	@Test
 //	public void testExist() {
 //		log.info(service);
 //		assertNotNull(service);
 //	}
-//	//´ñ±Û ¸®½ºÆ® °¡Á®¿À±â Å×½ºÆ®
+//	//ëŒ“ê¸€ ë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸° í…ŒìŠ¤íŠ¸
 //	@Test
 //	public void testGetList() throws Exception{
 //		service.getListWithPaging(new BoardCriteria(2,10)).forEach(board->log.info(board));
 //	}
-//	//´ñ±Û »ðÀÔ Å×½ºÆ®
+//	//ëŒ“ê¸€ ì‚½ìž… í…ŒìŠ¤íŠ¸
 //	@Test
 //	public void insertTest() throws Exception {
 //		BoardVO board = new BoardVO();
@@ -48,34 +48,34 @@ public class BoardServiceTests {
 //		board.setBoardRegDate(day);
 //		board.setBoardEndDate(day);
 //		service.insert(board);
-//		log.info("°Ô½Ã¹° »ý¼º");
+//		log.info("ê²Œì‹œë¬¼ ìƒì„±");
 //	}
-//	//´ñ±Û Á¶È¸ Å×½ºÆ®
+//	//ëŒ“ê¸€ ì¡°íšŒ í…ŒìŠ¤íŠ¸
 //	@Test 
 //	public void testRead() throws Exception{
-//		log.info(service.read(1L));//1¹ø ´ñ±Û Á¶È¸
-//		log.info("°Ô½ÃÆÇ read ¿Ï·á");
+//		log.info(service.read(1L));//1ë²ˆ ëŒ“ê¸€ ì¡°íšŒ
+//		log.info("ê²Œì‹œíŒ read ì™„ë£Œ");
 //	}
-//	//´ñ±Û ¼öÁ¤ Å×½ºÆ®
+//	//ëŒ“ê¸€ ìˆ˜ì • í…ŒìŠ¤íŠ¸
 //	@Test
 //	public void testUpdate() throws Exception{
 //		BoardVO board = service.read(4L);
 //		if(board==null) {
 //			return;
 //		}
-//		//board.setQtitle("Á¦¸ñ ¼öÁ¤");
-//		log.info("¼öÁ¤ : " + service.update(board));
+//		//board.setQtitle("ì œëª© ìˆ˜ì •");
+//		log.info("ìˆ˜ì • : " + service.update(board));
 //	}
-//	//´ñ±Û »èÁ¦ Å×½ºÆ®
+//	//ëŒ“ê¸€ ì‚­ì œ í…ŒìŠ¤íŠ¸
 //	@Test
 //	public void testDelete() throws Exception{
 //		//log.info(service.delte(4L));
-//		log.info("delte ¿Ï·á");
+//		log.info("delte ì™„ë£Œ");
 //	}
 	
 	@Test
 	public void testGetListWithPaging() throws Exception {
-		service.getListWithPaging(new BoardCriteria(2,10)).forEach(board -> log.info(board));
+		//service.getListWithPaging(new BoardCriteria(2,10)).forEach(board -> log.info(board));
 	}
 	
 	/*

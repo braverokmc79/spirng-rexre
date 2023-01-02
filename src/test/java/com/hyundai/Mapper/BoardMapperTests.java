@@ -25,11 +25,11 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class BoardMapperTests {
 	
-	//°Ô½ÃÆÇ Mapper »ç¿ë
+	//ê²Œì‹œíŒ Mapper ì‚¬ìš©
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
 	
-	//°Ô½ÃÆÇ »ğÀÔ Å×½ºÆ®
+	//ê²Œì‹œíŒ ì‚½ì… í…ŒìŠ¤íŠ¸
 	@Test
 	public void testInsert() {
 		Date day = new Date(0);
@@ -40,7 +40,7 @@ public class BoardMapperTests {
 		board.setBoardContent("testContent");
 		board.setBoardRegDate(day);
 		board.setBoardEndDate(day);
-		board.setBoardCategory("±³È¯/È¯ºÒ");
+		board.setBoardCategory("êµí™˜/í™˜ë¶ˆ");
 		board.setBoardSubcategory("1:1");
 		
 		mapper.insert(board);
@@ -48,29 +48,29 @@ public class BoardMapperTests {
 	
 	}
 	
-	//°Ô½ÃÆÇ Á¶È¸ Å×½ºÆ®
+	//ê²Œì‹œíŒ ì¡°íšŒ í…ŒìŠ¤íŠ¸
 	@Test
 	public void testRead() {
 		BoardVO board = mapper.read(3L); 
-		log.info("°Ô½ÃÆÇ Á¶È¸ Å×½ºÆ® : " + board);
+		log.info("ê²Œì‹œíŒ ì¡°íšŒ í…ŒìŠ¤íŠ¸ : " + board);
 	}
 	
-	//°Ô½ÃÆÇ »èÁ¦ Å×½ºÆ®
+	//ê²Œì‹œíŒ ì‚­ì œ í…ŒìŠ¤íŠ¸
 	@Test
 	public void testDelete() {
 		log.info("delete count : "+mapper.delete(3L));
 	}
-	//°Ô½ÃÆÇ ¼öÁ¤ Å×½ºÆ®
+	//ê²Œì‹œíŒ ìˆ˜ì • í…ŒìŠ¤íŠ¸
 	@Test
 	public void testUpdate() {
 		Date day = new Date(0);
 		BoardVO board = new BoardVO();
 		board.setBoardId(3L);
-		board.setBoardTitle("Á¦¸ñ ¼öÁ¤");
-		board.setBoardContent("³»¿ë ¼öÁ¤");
+		board.setBoardTitle("ì œëª© ìˆ˜ì •");
+		board.setBoardContent("ë‚´ìš© ìˆ˜ì •");
 		board.setBoardRegDate(day);
 		board.setBoardEndDate(day);
-		board.setBoardCategory("±³È¯/È¯ºÒ");
+		board.setBoardCategory("êµí™˜/í™˜ë¶ˆ");
 		board.setBoardSubcategory("1:1");
 		
 	
@@ -78,16 +78,16 @@ public class BoardMapperTests {
 		boolean count = mapper.update(board);
 		log.info("update count : " + count);
 	}
-	//°Ô½ÃÆÇ ÆäÀÌÂ¡ Å×½ºÆ®
+	//ê²Œì‹œíŒ í˜ì´ì§• í…ŒìŠ¤íŠ¸
 	@Test
 	public void testPaging() {
 		BoardCriteria cri = new BoardCriteria();
 		log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-		//10°³¾¿ 3ÆäÀÌÁö
+		//10ê°œì”© 3í˜ì´ì§€
 		cri.setPageNum(3);
 		cri.setAmount(10);
-		List<BoardVO> list = mapper.getListWithPaging(cri);
-		log.info(list.size());
+	//	List<BoardVO> list = mapper.getListWithPaging(cri);
+	//	log.info(list.size());
 	}
 	
 	

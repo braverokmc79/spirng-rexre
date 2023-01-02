@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.hyundai.domain.BoardCriteria;
 import com.hyundai.domain.BoardVO;
+import com.hyundai.domain.PageMaker;
 import com.hyundai.mapper.BoardMapper;
 
 import lombok.AllArgsConstructor;
@@ -22,15 +23,19 @@ public class BoardServiceImpl implements BoardService {
 
 	// 페이징 처리한 게시물 리스트를 가져옴
 	@Override
-	public List<BoardVO> getListWithPaging(BoardCriteria cri)throws Exception {
-		log.info(">>> 게시판 페이징 처리 list 불러오기 시작" + cri);
-		return mapper.getListWithPaging(cri);
+	public List<BoardVO> getListWithPaging(PageMaker pageMaker)throws Exception {
+		log.info(">>> 게시판 페이징 처리 list 불러오기 시작" + pageMaker.toString());
+		return mapper.getListWithPaging(pageMaker);
 	}
 
 	// 등록(insert)
 	@Override
 	public void insert(BoardVO board) throws Exception {
 		log.info(">>> insert 시작");
+		if(board.getMembersMemberId()==null) {
+			board.setMembersMemberId(Long.valueOf(1));
+		}
+		
 		mapper.insert(board);
 	}
 
@@ -57,15 +62,15 @@ public class BoardServiceImpl implements BoardService {
 
 	// 게시물의 총 행 개수 get (getTotal)
 	@Override
-	public int getTotal(BoardCriteria cri) throws Exception {
+	public int getTotal(PageMaker pageMaker) throws Exception {
 		log.info(">>> 총 행 개수 가져오는 메서드 시작");
-		return mapper.getTotalCount(cri);
+		return mapper.getTotalCount(pageMaker);
 	}
 
 	@Override
-	public List<BoardVO> getList2(BoardCriteria cri) throws Exception {
+	public List<BoardVO> getList2(PageMaker pageMaker) throws Exception {
 		log.info("@@@@@@@@@@@@@@2 getList2 ServiceImple");
-		return mapper.getListWithPaging(cri);
+		return mapper.getListWithPaging(pageMaker);
 	}
 
 }

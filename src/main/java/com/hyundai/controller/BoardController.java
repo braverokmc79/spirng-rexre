@@ -1,5 +1,7 @@
 package com.hyundai.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.hyundai.domain.BoardCriteria;
 import com.hyundai.domain.BoardPageDTO;
 import com.hyundai.domain.BoardVO;
+import com.hyundai.domain.PageMaker;
 import com.hyundai.service.BoardService;
 
 import lombok.AllArgsConstructor;
@@ -32,20 +35,25 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
-	/*
+	/**
 	 * 게시판에서 게시글의 리스트를 불러오기 위한 함수
-	 * BoardCriteria를 사용해 페이징 처리 
+	 * PageMaker 를 사용해 페이징 처리 
 	 */
 	@GetMapping("/list")
-	public void list(BoardCriteria cri, Model model) throws Exception {
-		log.info("list"+cri);
-		model.addAttribute("list", service.getListWithPaging(cri)); //페이징 처리한 목록 리스트 
+	public void list(PageMaker pageMaker, Model model) throws Exception{
+		
+		int total = service.getTotal(pageMaker); // 게시글의 개수 표시
 				
-		int total = service.getTotal(cri); // 게시글의 개수 표시
+		pageMaker.setTotPage(total);		
+		List<BoardVO> list=service.getListWithPaging(pageMaker);
+
+		model.addAttribute("pagination", pageMaker.pagination("list")); //페이지네이션 설정
 		model.addAttribute("count", total); // 게시글의 총 개수
-		model.addAttribute("pageMaker",new BoardPageDTO(cri, total)); // 페이징 처리한 값을 pageMaker에 전달
-		model.addAttribute("list", service.getListWithPaging(cri));
+		model.addAttribute("pageMaker",pageMaker); // 페이징 처리한 값을 pageMaker에 전달
+		model.addAttribute("list", list );
 	}
+	
+	
 	
 	//게시판 insert 페이지
 	@GetMapping("/insert")
@@ -56,17 +64,22 @@ public class BoardController {
 	//게시글 등록 페이지에서 등록 버튼을 누르면 insert 후에 리스트 페이지 첫 화면으로 이동 -> insert.jsp
 	@PostMapping("/insert")
 	public String insert(BoardVO board, RedirectAttributes rttr) throws Exception{
+		System.out.println(" insert  : "+ board.toString());
+		
 		//insert 시작
 		service.insert(board);
 		rttr.addFlashAttribute("inserted", board.getBoardId());
-		//insert를 하면 게시글 가장 상단에 위치하기 때문에 초기 게시판 화면으로 redirect
-		return "redirect:/board/list?pageNum=1&amount=10";
+		return "redirect:list";
 	}
+	
+	
+	
 	//게시글 조회 및 수정 -> read.jsp 조회하고 싶은 게시글을 클릭하면 boardId과 페이징 정보 자동 바인딩
 	@GetMapping({"/read","/update"})
 	public void read(@RequestParam("boardId")long boardId, Model model, @ModelAttribute("cri")BoardCriteria cri) throws Exception {
 		model.addAttribute("board", service.read(boardId));
-	}
+	}	
+	
 	
 	@PostMapping("/update") // 게시글 수정(update) 페이지. 수정 버튼을 누르면 실행됨
 	public String update(BoardVO board, RedirectAttributes rttr, @ModelAttribute("cri")BoardCriteria cri) throws Exception {
